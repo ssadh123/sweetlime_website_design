@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweetlime by AS — Build a Baby Gift</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Manrope:wght@400;500;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================================
+     TOKENS
+     ============================================================ */
+  :root{
+    --clr-bg:            #FAF5EC;
+    --clr-surface:       #FFFFFF;
+    --clr-text:          #2C2420;
+    --clr-text-soft:     #7A6E64;
+    --clr-text-muted:    #A79C90;
+    --clr-border:        #E9E0D2;
+    --clr-teal:          #6F9C8D;
+    --clr-teal-deep:     #4F7A6D;
+    --clr-teal-tint:     #EAF1EE;
+    --clr-blue:          #93AEC1;
+    --clr-beige:         #E6D9C4;
+    --clr-pink:          #DCB0A6;
+    --clr-thread-beige:  #8A6E4E;
+    --clr-sale:          #A23B2A;
+    --font-display:      'Jost', 'Manrope', sans-serif;
+    --font-body:         'Manrope', 'Jost', sans-serif;
+    --font-menu:         'Avenir Next Demi Bold', 'Avenir Next', 'Gotham', 'Montserrat', sans-serif;
+    --container-w:       1280px;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  [hidden]{ display:none !important; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:var(--font-body);
+    color:var(--clr-text);
+    background:var(--clr-bg);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:118px; /* room for sticky bar */
+  }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+  ul{ list-style:none; margin:0; padding:0; }
+  img{ max-width:100%; display:block; }
+
+  /* ============================================================
+     COMPONENT: GiftPageHeader
+     ============================================================ */
+  .gift-page-header{
+    background:var(--clr-surface);
+    border-bottom:1px solid var(--clr-border);
+    padding:20px 48px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .gift-page-header .logo-placeholder{
+    font-family:var(--font-display); font-size:20px; font-weight:500;
+    letter-spacing:1px; color:var(--clr-text);
+    transition:font-size .15s ease;
+  }
+  .gift-page-header .back-link{
+    font-family:var(--font-display); font-size:13px; font-weight:500;
+    letter-spacing:0.5px; color:var(--clr-text-soft);
+  }
+
+  /* ============================================================
+     COMPONENT: GiftHero
+     ============================================================ */
+  .gift-hero{
+    max-width:640px; margin:0 auto; text-align:center;
+    padding:44px 24px 28px;
+  }
+  .gift-hero .eyebrow{
+    font-family:var(--font-menu); font-size:11.5px; font-weight:600;
+    letter-spacing:2.5px; text-transform:uppercase; color:var(--clr-text-muted);
+    margin:0 0 10px;
+  }
+  .gift-hero h1{
+    font-family:var(--font-body); font-size:21px; font-weight:700;
+    margin:0; color:var(--clr-text); line-height:1.4;
+  }
+  .gift-hero p{
+    font-family:var(--font-body); font-size:15.5px; line-height:1.6;
+    color:var(--clr-text-soft); margin:0;
+  }
+
+  /* ============================================================
+     COMPONENT: StepIndicator
+     ============================================================ */
+  .step-indicator{
+    max-width:420px; margin:0 auto; padding:0 24px 34px; text-align:center;
+  }
+  .step-eyebrow{
+    font-family:var(--font-menu); font-size:11px; font-weight:600;
+    letter-spacing:2.5px; text-transform:uppercase; color:var(--clr-text-muted);
+    margin:0 0 4px;
+  }
+  .step-heading{
+    font-family:var(--font-display); font-size:19px; font-weight:500;
+    color:var(--clr-text); margin:0 0 18px;
+  }
+  .step-track{
+    display:flex; align-items:center; justify-content:center; gap:0;
+    margin:0 0 10px;
+  }
+  .step-dot{
+    width:11px; height:11px; border-radius:50%;
+    background:var(--clr-border); border:2px solid var(--clr-border);
+    flex:0 0 auto; transition:all .2s ease;
+    position:relative; z-index:2;
+  }
+  .step-dot.active, .step-dot.done{
+    background:var(--clr-teal-deep); border-color:var(--clr-teal-deep);
+  }
+  .step-dot.active{ box-shadow:0 0 0 4px var(--clr-teal-tint); }
+  .step-line{
+    width:64px; height:2px; background:var(--clr-border); flex:0 0 auto;
+    transition:background .25s ease;
+  }
+  .step-line.done{ background:var(--clr-teal-deep); }
+  .step-labels{
+    display:flex; justify-content:center; gap:36px;
+  }
+  .step-labels span{
+    font-family:var(--font-menu); font-size:10.5px; font-weight:600;
+    letter-spacing:1px; text-transform:uppercase; color:var(--clr-text-muted);
+    transition:color .2s ease;
+  }
+  .step-labels span.active{ color:var(--clr-teal-deep); }
+
+  /* ============================================================
+     COMPONENT: GiftFilterBar
+     ============================================================ */
+  .gift-filter-bar{
+    display:flex; justify-content:center; gap:10px;
+    padding:0 24px 32px;
+    overflow-x:auto; -ms-overflow-style:none; scrollbar-width:none;
+  }
+  .gift-filter-bar::-webkit-scrollbar{ display:none; }
+  .filter-pill{
+    font-family:var(--font-display); font-size:13px; font-weight:500;
+    letter-spacing:0.5px; text-transform:uppercase;
+    padding:10px 22px; border-radius:999px; flex:0 0 auto;
+    border:1px solid var(--clr-border);
+    background:var(--clr-surface); color:var(--clr-text-soft);
+    transition:all .15s ease;
+  }
+  .filter-pill.active{
+    background:var(--clr-text); color:#fff; border-color:var(--clr-text);
+  }
+  .filter-pill:not(.active):hover{ border-color:var(--clr-teal); color:var(--clr-teal-deep); }
+
+  /* ============================================================
+     COMPONENT: GiftGrid + GiftCard  (luxury redesign)
+     ============================================================ */
+  .gift-grid{
+    max-width:var(--container-w); margin:0 auto;
+    padding:0 40px 40px;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:32px;
+  }
+  .gift-card{
+    background:var(--clr-surface);
+    border:1px solid var(--clr-border);
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+    transition:box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .gift-card:hover{ box-shadow:0 16px 32px rgba(44,36,32,0.08); transform:translateY(-2px); }
+  .gift-card.selected{
+    border-color:var(--clr-teal);
+    box-shadow:0 0 0 1.5px var(--clr-teal), 0 16px 32px rgba(79,122,109,0.14);
+  }
+  .gift-card-img{
+    position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--clr-beige);
+  }
+  .gift-card-img img{ width:100%; height:100%; object-fit:cover; }
+  .gift-card.selected .gift-card-img::after{
+    content:""; position:absolute; inset:0; background:rgba(111,156,141,0.10);
+  }
+  .gift-card-tag{
+    position:absolute; left:12px; top:12px; z-index:2;
+    background:rgba(255,255,255,0.92); color:var(--clr-text-soft);
+    font-family:var(--font-menu); font-size:9.5px; font-weight:600;
+    letter-spacing:1.5px; text-transform:uppercase;
+    padding:5px 9px; border-radius:3px;
+  }
+
+  .gift-card-select{
+    position:absolute; right:12px; top:12px; z-index:3;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(255,255,255,0.94); border:1px solid var(--clr-border);
+    display:flex; align-items:center; justify-content:center;
+    transition:all .15s ease;
+  }
+  .gift-card-select .select-check{
+    font-size:14px; color:transparent; line-height:1;
+  }
+  .gift-card-select:hover{ border-color:var(--clr-teal); }
+  .gift-card.selected .gift-card-select{
+    background:var(--clr-teal-deep); border-color:var(--clr-teal-deep);
+  }
+  .gift-card.selected .gift-card-select .select-check{ color:#fff; }
+  .gift-card.maxed:not(.selected) .gift-card-select{ opacity:0.35; }
+
+  .gift-card-info{
+    padding:14px 14px 16px;
+    display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+  }
+  .gift-card-info-text{ min-width:0; width:100%; }
+  .gift-card-info h3{
+    font-family:var(--font-menu); font-size:12.5px; font-weight:600;
+    letter-spacing:0.2px; line-height:1.4; margin:0 0 6px; color:var(--clr-text);
+    overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  }
+  .gift-card-price{
+    font-family:var(--font-body); font-size:13px; color:var(--clr-text); margin:0;
+    display:flex; align-items:baseline; gap:7px; flex-wrap:wrap;
+  }
+  .gift-card-price .price-compare{
+    color:var(--clr-text-muted); text-decoration:line-through; font-size:11.5px;
+  }
+  .gift-card-cta{
+    flex:0 0 auto; display:inline-flex; align-items:center; gap:4px;
+    background:var(--clr-surface); border:1px solid var(--clr-text); border-radius:999px;
+    padding:8px 15px;
+    font-family:var(--font-menu); font-size:10.5px; font-weight:700;
+    letter-spacing:0.6px; text-transform:uppercase; color:var(--clr-text);
+    transition:all .15s ease;
+  }
+  .gift-card-cta .cta-check{ display:none; }
+  .gift-card.selected .gift-card-cta{
+    background:var(--clr-teal-deep); border-color:var(--clr-teal-deep); color:#fff;
+  }
+  .gift-card.selected .gift-card-cta .cta-plus{ display:none; }
+  .gift-card.selected .gift-card-cta .cta-check{ display:inline; font-size:10px; }
+
+  /* ============================================================
+     COMPONENT: SelectionBar (sticky) — Apple-checkout style
+     ============================================================ */
+  .selection-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    background:var(--clr-surface);
+    border-top:1px solid var(--clr-border);
+    box-shadow:0 -8px 24px rgba(44,36,32,0.07);
+  }
+  .bundle-summary-toggle{
+    width:100%; display:flex; align-items:center; gap:10px;
+    background:none; border:none; border-bottom:1px solid var(--clr-border);
+    padding:12px 40px; max-width:var(--container-w); margin:0 auto;
+  }
+  .bundle-summary-icon{ font-size:15px; line-height:1; }
+  .bundle-summary-text{
+    flex:1; text-align:left;
+    font-family:var(--font-display); font-size:13.5px; font-weight:500; color:var(--clr-text);
+  }
+  .bundle-summary-text .bundle-count-check{ color:var(--clr-teal-deep); margin-right:2px; }
+  .bundle-summary-chevron{
+    font-size:11px; color:var(--clr-text-muted); transition:transform .2s ease;
+  }
+  .bundle-summary-toggle.open .bundle-summary-chevron{ transform:rotate(180deg); }
+  .bundle-summary-toggle:disabled{ opacity:0.5; }
+
+  .bundle-drawer{
+    max-width:var(--container-w); margin:0 auto;
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+    padding:0 40px;
+  }
+  .bundle-drawer.open{ max-height:260px; overflow-y:auto; padding:14px 40px; }
+  .bundle-drawer-list li{
+    display:flex; align-items:center; gap:8px; padding:6px 0;
+    font-family:var(--font-body); font-size:13px; color:var(--clr-text);
+  }
+  .bundle-drawer-list li .bd-check{ color:var(--clr-teal-deep); font-size:12px; }
+  .bundle-drawer-list li .bd-name{ flex:1; }
+  .bundle-drawer-list li .bd-price{ color:var(--clr-text-soft); }
+  .bundle-drawer-row{
+    display:flex; justify-content:space-between; padding-top:8px; margin-top:6px;
+    border-top:1px solid var(--clr-border);
+    font-family:var(--font-body); font-size:13px; color:var(--clr-teal-deep); font-weight:600;
+  }
+  .bundle-drawer-empty{
+    font-family:var(--font-body); font-size:13px; color:var(--clr-text-muted); font-style:italic; padding:4px 0;
+  }
+
+  .selection-bar-main{
+    max-width:var(--container-w); margin:0 auto;
+    padding:16px 40px 18px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .selection-bar-total{ display:flex; flex-direction:column; gap:2px; }
+  .sb-label{
+    font-family:var(--font-menu); font-size:10.5px; font-weight:600;
+    letter-spacing:1.5px; text-transform:uppercase; color:var(--clr-text-muted);
+  }
+  .sb-amount{
+    font-family:var(--font-display); font-size:22px; font-weight:500; color:var(--clr-text);
+  }
+  .sb-savings{
+    font-family:var(--font-body); font-size:11.5px; color:var(--clr-teal-deep); font-weight:600;
+  }
+
+  .btn-primary{
+    font-family:var(--font-display); font-size:13.5px; font-weight:500;
+    letter-spacing:0.6px; color:#fff;
+    background:var(--clr-teal-deep); border:none; border-radius:8px;
+    padding:16px 28px; white-space:nowrap;
+    transition:background .15s ease, opacity .15s ease, transform .1s ease;
+  }
+  .btn-primary:hover:not(:disabled){ background:var(--clr-text); }
+  .btn-primary:active:not(:disabled){ transform:scale(0.98); }
+  .btn-primary:disabled{ background:var(--clr-border); color:var(--clr-text-muted); cursor:not-allowed; }
+
+  /* Bundle-ready celebration banner */
+  .bundle-ready-banner{
+    position:fixed; left:50%; bottom:130px; transform:translateX(-50%) translateY(12px) scale(0.96);
+    background:var(--clr-teal-deep); color:#fff;
+    font-family:var(--font-display); font-size:14.5px; font-weight:500;
+    padding:14px 26px; border-radius:999px; z-index:60;
+    opacity:0; pointer-events:none; transition:all .28s cubic-bezier(.2,.9,.3,1.2);
+    display:flex; align-items:center; gap:8px;
+    box-shadow:0 10px 26px rgba(44,36,32,0.22);
+  }
+  .bundle-ready-banner.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+
+  .confetti-piece{
+    position:fixed; top:-10px; width:7px; height:11px; z-index:59;
+    opacity:0.95; border-radius:1px;
+    animation:confetti-fall 1.5s ease-in forwards;
+  }
+  @keyframes confetti-fall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+    100%{ transform:translateY(320px) rotate(340deg); opacity:0; }
+  }
+
+  /* Toast */
+  .gift-toast{
+    position:fixed; left:50%; bottom:130px; transform:translateX(-50%) translateY(10px);
+    background:var(--clr-text); color:#fff;
+    font-family:var(--font-body); font-size:13.5px;
+    padding:12px 20px; border-radius:8px; z-index:50;
+    opacity:0; pointer-events:none; transition:all .22s ease;
+  }
+  .gift-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ============================================================
+     COMPONENT: GiftCheckout
+     ============================================================ */
+  .gift-checkout{
+    max-width:var(--container-w); margin:0 auto;
+    padding:60px 40px 20px;
+    border-top:1px solid var(--clr-border);
+  }
+  .gift-checkout > h2{
+    font-family:var(--font-display); font-size:26px; font-weight:500;
+    text-align:center; margin:0 0 40px;
+  }
+  .step-back-link{
+    display:inline-flex; align-items:center; gap:6px; margin-bottom:18px;
+    background:none; border:none; padding:0;
+    font-family:var(--font-display); font-size:13px; font-weight:500; color:var(--clr-text-soft);
+    transition:color .15s ease;
+  }
+  .step-back-link:hover{ color:var(--clr-teal-deep); }
+  .checkout-gift-panel.standalone-panel,
+  .checkout-summary.standalone-panel{
+    max-width:560px; margin:0 auto 30px;
+  }
+  .checkout-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:48px;
+    margin-bottom:36px;
+  }
+  .checkout-grid.solo{
+    grid-template-columns:1fr; max-width:520px; margin:0 auto 36px;
+  }
+
+  /* ---------- Order summary ---------- */
+  .checkout-summary{
+    background:var(--clr-surface); border:1px solid var(--clr-border);
+    border-radius:14px; padding:30px;
+  }
+  .checkout-summary h3{
+    font-family:var(--font-menu); font-size:13px; font-weight:600;
+    letter-spacing:2px; text-transform:uppercase; color:var(--clr-text-soft);
+    margin:0 0 18px;
+  }
+  .summary-list{ margin-bottom:18px; min-height:24px; }
+  .summary-list li{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 0; border-bottom:1px solid var(--clr-border);
+    font-family:var(--font-body); font-size:13.5px;
+  }
+  .summary-list li img{
+    width:40px; height:40px; border-radius:6px; object-fit:cover;
+    border:1px solid var(--clr-border);
+  }
+  .summary-list li .s-name{ flex:1; color:var(--clr-text); }
+  .summary-list li .s-price{ color:var(--clr-text-soft); }
+  .summary-list .empty-note{
+    color:var(--clr-text-muted); font-size:13px; font-style:italic; border-bottom:none; padding:6px 0;
+  }
+  .summary-row{
+    display:flex; justify-content:space-between;
+    font-family:var(--font-body); font-size:14px; color:var(--clr-text-soft);
+    padding:7px 0;
+  }
+  .summary-row.savings-row{ color:var(--clr-teal-deep); font-weight:600; }
+  .summary-total{
+    font-family:var(--font-display); font-size:17px; font-weight:500;
+    color:var(--clr-text); border-top:1px solid var(--clr-border);
+    margin-top:8px; padding-top:14px;
+  }
+
+  /* ---------- Gift panel ---------- */
+  .checkout-gift-panel{
+    background:var(--clr-teal-tint); border-radius:14px; padding:30px;
+  }
+  .gift-panel-heading{
+    font-family:var(--font-display); font-size:16px; font-weight:500; margin:0 0 4px;
+  }
+  .gift-panel-sub{
+    font-family:var(--font-body); font-size:13px; color:var(--clr-text-soft); margin:0 0 20px;
+  }
+
+  /* Envelope card + influencer video, side by side */
+  .envelope-video-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+    margin-bottom:22px;
+  }
+  .envelope-video{
+    background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:14px;
+    overflow:hidden; box-shadow:0 10px 24px rgba(44,36,32,0.06);
+    display:flex; flex-direction:column;
+  }
+  .envelope-video-el{
+    width:100%; aspect-ratio:9/16; object-fit:cover; background:#000; display:block;
+  }
+  .envelope-video-caption{
+    font-family:var(--font-body); font-size:12px; color:var(--clr-text-soft);
+    text-align:center; padding:12px 10px; margin:0;
+  }
+
+  /* Envelope card */
+  .envelope-card{
+    background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:14px;
+    overflow:hidden; margin-bottom:22px;
+    box-shadow:0 10px 24px rgba(44,36,32,0.06);
+  }
+  .envelope-card-img{ aspect-ratio:9/7; overflow:hidden; background:var(--clr-beige); }
+  .envelope-card-img img{ width:100%; height:100%; object-fit:cover; }
+  .envelope-card-info{ padding:20px 22px 22px; }
+  .envelope-card-info h3{
+    font-family:var(--font-display); font-size:16px; font-weight:500; margin:0 0 4px; color:var(--clr-text);
+  }
+  .envelope-card-sub{
+    font-family:var(--font-body); font-size:13px; color:var(--clr-text-soft); margin:0 0 12px; line-height:1.5;
+  }
+  .envelope-badges{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .envelope-badges li{
+    font-family:var(--font-menu); font-size:10px; font-weight:600; letter-spacing:1px; text-transform:uppercase;
+    color:var(--clr-teal-deep); background:var(--clr-teal-tint); border:1px solid var(--clr-teal);
+    padding:5px 10px; border-radius:999px;
+  }
+  .envelope-card-footer{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; border-top:1px solid var(--clr-border);
+  }
+  .envelope-card-price{ font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--clr-text); }
+  .envelope-included{
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--font-menu); font-size:11px; font-weight:600; letter-spacing:0.6px;
+    color:var(--clr-teal-deep);
+  }
+
+  /* Embroidery */
+  .embroider-toggle{
+    display:flex; align-items:center; gap:12px; cursor:pointer;
+    font-family:var(--font-body); font-size:14px; color:var(--clr-text);
+    padding:18px 0; border-top:1px solid var(--clr-border);
+  }
+  .embroider-toggle input{ display:none; }
+  .toggle-track{
+    width:42px; height:24px; border-radius:999px; background:var(--clr-border);
+    position:relative; transition:background .15s ease; flex:0 0 auto;
+  }
+  .toggle-thumb{
+    position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%;
+    background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    transition:transform .15s ease;
+  }
+  .embroider-toggle input:checked + .toggle-track{ background:var(--clr-teal-deep); }
+  .embroider-toggle input:checked + .toggle-track .toggle-thumb{ transform:translateX(18px); }
+
+  .embroider-detail{
+    background:var(--clr-surface); border-radius:12px; padding:22px;
+    margin-bottom:4px;
+  }
+  .embroider-heading{
+    font-family:var(--font-display); font-size:16px; font-weight:500; margin:0 0 18px; color:var(--clr-text);
+  }
+  .embroider-field-label{
+    display:block; font-family:var(--font-menu); font-size:11px; font-weight:600;
+    letter-spacing:1.2px; text-transform:uppercase; color:var(--clr-text-soft); margin-bottom:8px;
+  }
+  .embroider-field-label.preview-label{ margin-top:20px; }
+  #embroiderInput{
+    width:100%; padding:13px 14px; border-radius:8px; border:1px solid var(--clr-border);
+    font-family:var(--font-body); font-size:14.5px; color:var(--clr-text); background:#fff;
+  }
+  #embroiderInput:focus{ outline:none; border-color:var(--clr-teal); }
+  .char-count{
+    text-align:right; font-family:var(--font-body); font-size:11.5px; color:var(--clr-text-muted); margin-top:4px;
+  }
+
+  .envelope-live-preview{
+    position:relative; border-radius:10px; overflow:hidden; margin-top:2px;
+    box-shadow:0 10px 24px rgba(44,36,32,0.10); border:1px solid var(--clr-border);
+  }
+  .envelope-live-preview img{ width:100%; display:block; }
+  .embroider-live-text{
+    position:absolute; left:11%; bottom:11%;
+    font-family:var(--font-menu); font-weight:700;
+    font-size:clamp(15px, 5vw, 22px);
+    letter-spacing:0.5px;
+    text-shadow:0 1px 0 rgba(255,255,255,0.35);
+    transition:color .15s ease;
+    pointer-events:none;
+  }
+  .embroider-live-text.placeholder{ opacity:0.35; font-weight:600; }
+
+  .thread-colours{ display:flex; gap:14px; margin-top:10px; }
+  .thread-swatch{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    background:none; border:none; font-family:var(--font-body); font-size:11px; color:var(--clr-text-soft);
+  }
+  .thread-swatch span{
+    display:block; width:26px; height:26px; border-radius:50%;
+    background:var(--sw); border:2px solid transparent; box-shadow:0 0 0 1px var(--clr-border);
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .thread-swatch.active span{ box-shadow:0 0 0 2px var(--clr-teal-deep); transform:scale(1.08); }
+  .thread-swatch.active{ color:var(--clr-text); font-weight:600; }
+
+  .btn-checkout{ display:block; margin:0 auto; padding:17px 46px; }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 1100px){
+    .gift-grid{ grid-template-columns:repeat(3, 1fr); }
+  }
+  @media (max-width: 760px){
+    .gift-grid{ grid-template-columns:repeat(2, 1fr); padding:0 20px 36px; gap:18px; }
+    .gift-page-header{ padding:18px 20px; }
+    .gift-page-header .logo-placeholder{ font-size:15.5px; }
+    .gift-hero{ padding:24px 20px 20px; }
+    .gift-hero .eyebrow{ margin-bottom:8px; }
+    .gift-hero h1{ font-size:18px; }
+    .step-indicator{ padding:0 20px 30px; }
+    .checkout-grid{ grid-template-columns:1fr; gap:20px; }
+    .gift-checkout{ padding:44px 20px 24px; }
+    .checkout-summary, .checkout-gift-panel{ padding:24px 20px; border-radius:16px; }
+    .gift-card-info{ padding:16px 16px 18px; }
+    .gift-card-info h3{ font-size:13px; }
+    .bundle-summary-toggle{ padding:14px 20px; }
+    .bundle-drawer{ padding:0 20px; }
+    .bundle-drawer.open{ padding:14px 20px; }
+    .selection-bar-main{ padding:16px 20px 20px; }
+    .sb-amount{ font-size:24px; }
+    .btn-primary{ padding:17px 22px; font-size:13.5px; }
+    .envelope-card-img{ aspect-ratio:4/3; }
+    .envelope-video-row{ grid-template-columns:1fr; }
+    .envelope-video{ max-width:280px; margin:0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     COMPONENT: GiftPageHeader
+========================================================= -->
+<header class="gift-page-header">
+  <span class="logo-placeholder">sweetlime</span>
+  <a href="#" class="back-link">&larr; Back</a>
+</header>
+
+<!-- =========================================================
+     COMPONENT: GiftHero
+========================================================= -->
+<section class="gift-hero">
+  <p class="eyebrow">Build a Personalized Baby Gift</p>
+  <h1 class="gift-hero-headline">For first cuddles, first adventures, and every celebration in between.</h1>
+</section>
+
+<!-- =========================================================
+     COMPONENT: StepIndicator
+========================================================= -->
+<div class="step-indicator" id="stepIndicator">
+  <p class="step-eyebrow">Step <span id="stepNum">1</span> of 3</p>
+  <h2 class="step-heading" id="stepHeading">Choose Products</h2>
+  <div class="step-track">
+    <span class="step-dot active" data-step="1"></span>
+    <span class="step-line" id="stepLine1"></span>
+    <span class="step-dot" data-step="2"></span>
+    <span class="step-line" id="stepLine2"></span>
+    <span class="step-dot" data-step="3"></span>
+  </div>
+  <div class="step-labels">
+    <span data-step="1" class="active">Products</span>
+    <span data-step="2">Gifting</span>
+    <span data-step="3">Checkout</span>
+  </div>
+</div>
+
+<!-- =========================================================
+     COMPONENT: GiftFilterBar
+========================================================= -->
+<div class="gift-filter-bar" id="filterBar">
+  <button class="filter-pill active" data-filter="all">All Styles</button>
+  <button class="filter-pill" data-filter="girl">Baby Girl</button>
+  <button class="filter-pill" data-filter="boy">Baby Boy</button>
+</div>
+
+<!-- =========================================================
+     COMPONENT: GiftGrid + GiftCard
+     16 real styles — data-gender / data-name / data-price drive
+     all JS behaviour below. Add more cards the same way and
+     everything (selection, filtering, summary) keeps working.
+========================================================= -->
+<section class="gift-grid" id="giftGrid">
+
+  <article class="gift-card" data-gender="girl" data-name="Cherry Blossom Ruffle Co-Ord Set" data-price="1800">
+    <div class="gift-card-img">
+      <img src="assets/girl_03_cherry_blossom_coord.jpg" alt="Cherry Blossom Ruffle Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Cherry Blossom Ruffle Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,800</span><span class="price-compare">Rs. 2,400</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="boy" data-name="Sunbeam Stripes Romper & Tee Set" data-price="1800">
+    <div class="gift-card-img">
+      <img src="assets/boy_01_sunbeam_stripes_romper.jpg" alt="Sunbeam Stripes Romper & Tee Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Sunbeam Stripes Romper &amp; Tee Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,800</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Sunset Safari Cotton Co-Ord Set" data-price="2600">
+    <div class="gift-card-img">
+      <img src="assets/girl_04_sunset_safari_coord.jpg" alt="Sunset Safari Cotton Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Sunset Safari Cotton Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 2,600</span><span class="price-compare">Rs. 3,400</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="boy" data-name="Little Sailor Cotton Co-Ord Set" data-price="3500">
+    <div class="gift-card-img">
+      <img src="assets/boy_02_little_sailor_coord.jpg" alt="Little Sailor Cotton Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Little Sailor Cotton Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 3,500</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Blossom Top & Shorts Co-Ord Set" data-price="1800">
+    <div class="gift-card-img">
+      <img src="assets/girl_05_blossom_top_shorts.jpg" alt="Blossom Top & Shorts Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Blossom Top &amp; Shorts Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,800</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="boy" data-name="Alligator Print Cotton Co-Ord Set" data-price="1440">
+    <div class="gift-card-img">
+      <img src="assets/boy_03_alligator_print_coord.jpg" alt="Alligator Print Cotton Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Alligator Print Cotton Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,440</span><span class="price-compare">Rs. 1,850</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Petal Parade Cotton Co-Ord Set" data-price="1440">
+    <div class="gift-card-img">
+      <img src="assets/girl_07_petal_parade_coord.jpg" alt="Petal Parade Cotton Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Petal Parade Cotton Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,440</span><span class="price-compare">Rs. 1,900</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="boy" data-name="Cloud & Cotton Shore Set" data-price="2600">
+    <div class="gift-card-img">
+      <img src="assets/boy_04_cloud_cotton_shore_set.jpg" alt="Cloud & Cotton Shore Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Cloud &amp; Cotton Shore Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 2,600</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Vintage Floral Eyelet Co-Ord Set" data-price="1950">
+    <div class="gift-card-img">
+      <img src="assets/girl_08_vintage_floral_eyelet_coord.jpg" alt="Vintage Floral Eyelet Co-Ord Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Vintage Floral Eyelet Co-Ord Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,950</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="boy" data-name="Classic Stripes & White Shirt Set" data-price="3500">
+    <div class="gift-card-img">
+      <img src="assets/boy_05_classic_stripes_shirt_set.jpg" alt="Classic Stripes & White Shirt Set">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Classic Stripes &amp; White Shirt Set</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 3,500</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Tiny Petal Summer Booties" data-price="650">
+    <div class="gift-card-img">
+      <img src="assets/girl_01_tiny_petal_booties.jpg" alt="Tiny Petal Summer Booties">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Tiny Petal Summer Booties</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 650</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="unisex" data-name="Junior Explorer Sun Hat" data-price="950">
+    <div class="gift-card-img">
+      <img src="assets/boy_06_explorer_hat.jpg" alt="Junior Explorer Sun Hat">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Junior Explorer Sun Hat</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 950</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Little Pearl Crochet Booties" data-price="1500">
+    <div class="gift-card-img">
+      <img src="assets/girl_02_pearl_crochet_booties.jpg" alt="Little Pearl Crochet Booties">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Little Pearl Crochet Booties</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,500</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="unisex" data-name="Skyline Stripe Sun Hat" data-price="950">
+    <div class="gift-card-img">
+      <img src="assets/boy_07_skyline_stripe_hat.jpg" alt="Skyline Stripe Sun Hat">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Skyline Stripe Sun Hat</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 950</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="girl" data-name="Heirloom Bow Mittens" data-price="1200">
+    <div class="gift-card-img">
+      <img src="assets/girl_06_heirloom_bow_mittens.jpg" alt="Heirloom Bow Mittens">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Heirloom Bow Mittens</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,200</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+  <article class="gift-card" data-gender="boy" data-name="Ivory Crochet Baby Booties" data-price="1800">
+    <div class="gift-card-img">
+      <img src="assets/boy_08_ivory_crochet_booties.jpg" alt="Ivory Crochet Baby Booties">
+      <button class="gift-card-select" aria-pressed="false"><span class="select-check">&#10003;</span></button>
+    </div>
+    <div class="gift-card-info">
+      <div class="gift-card-info-text">
+      <h3>Ivory Crochet Baby Booties</h3>
+      <p class="gift-card-price"><span class="price-now">Rs. 1,800</span><span class="price-compare">Rs. 2,400</span></p>
+      </div>
+      <button class="gift-card-cta"><span class="cta-plus">+</span><span class="cta-check">&#10003;</span><span class="cta-text">Add</span></button>
+    </div>
+  </article>
+
+</section>
+
+<!-- =========================================================
+     COMPONENT: SelectionBar (sticky, always visible) — Apple-checkout style
+========================================================= -->
+<div class="selection-bar">
+  <button class="bundle-summary-toggle" id="bundleSummaryToggle" disabled>
+    <span class="bundle-summary-icon">&#128717;</span>
+    <span class="bundle-summary-text" id="bundleSummaryText">Select items to get started</span>
+    <span class="bundle-summary-chevron" id="bundleChevron">&#9662;</span>
+  </button>
+  <div class="bundle-drawer" id="bundleDrawer">
+    <ul class="bundle-drawer-list" id="bundleDrawerList"></ul>
+  </div>
+  <div class="selection-bar-main">
+    <div class="selection-bar-total">
+      <span class="sb-label">Subtotal</span>
+      <span class="sb-amount" id="sbAmount">Rs. 0</span>
+      <span class="sb-savings" id="sbSavings" hidden>You're saving Rs. 0</span>
+    </div>
+    <button class="btn-primary" id="continueBtn" disabled>Continue to Gifting &rarr;</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     COMPONENT: GiftingStep (Step 2 — envelope + embroidery, one page)
+========================================================= -->
+<section class="gift-checkout" id="giftingStep" hidden>
+  <button class="step-back-link" data-back-to="1">&larr; Back to Products</button>
+  <h2>Gifting</h2>
+
+  <!-- Envelope + embroidery -->
+  <div class="checkout-gift-panel standalone-panel">
+    <p class="gift-panel-heading">Gift Packaging</p>
+    <p class="gift-panel-sub">Every order is beautifully wrapped in our signature envelope. Personalise it with a free embroidered name if you'd like.</p>
+
+    <!-- Envelope card + influencer video, side by side -->
+    <div class="envelope-video-row">
+      <div class="envelope-card">
+        <div class="envelope-card-img"><img src="assets/envelope_clean.jpg" alt="Premium Linen Gift Envelope"></div>
+        <div class="envelope-card-info">
+          <h3>Premium Linen Gift Envelope</h3>
+          <p class="envelope-card-sub">A reusable keepsake envelope, tied with cotton ribbon.</p>
+          <ul class="envelope-badges">
+            <li>Reusable</li>
+            <li>Personalised</li>
+            <li>Hand-embroidered</li>
+          </ul>
+          <div class="envelope-card-footer">
+            <span class="envelope-card-price">Rs. 500</span>
+            <span class="envelope-included"><span>&#10003;</span> Included with every order</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="envelope-video">
+        <video class="envelope-video-el" controls playsinline preload="metadata" poster="assets/envelope_video_poster.jpg">
+          <source src="assets/envelope_influencer.mp4" type="video/mp4">
+        </video>
+        <p class="envelope-video-caption">See the packaging in action</p>
+      </div>
+    </div>
+
+    <!-- Embroidery -->
+    <label class="embroider-toggle">
+      <input type="checkbox" id="embroiderToggle">
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      <span>Personalise with complimentary embroidery — <strong>Free</strong></span>
+    </label>
+
+    <div class="embroider-detail" id="embroiderDetail" hidden>
+      <p class="embroider-heading">Personalise your gift</p>
+
+      <label class="embroider-field-label" for="embroiderInput">Name</label>
+      <input type="text" id="embroiderInput" maxlength="12" placeholder="e.g. Krish">
+      <div class="char-count"><span id="charCount">0</span>/12</div>
+
+      <p class="embroider-field-label preview-label">Preview</p>
+      <div class="envelope-live-preview">
+        <img src="assets/envelope_clean.jpg" alt="">
+        <span class="embroider-live-text placeholder" id="embroiderLiveText" style="color:#8A6E4E;">Krish</span>
+      </div>
+
+      <p class="embroider-field-label preview-label">Thread Colour</p>
+      <div class="thread-colours" id="threadColours">
+        <button class="thread-swatch active" data-color="#8A6E4E" style="--sw:#8A6E4E;"><span></span>Beige</button>
+        <button class="thread-swatch" data-color="#6F9C8D" style="--sw:#6F9C8D;"><span></span>Sage</button>
+        <button class="thread-swatch" data-color="#93AEC1" style="--sw:#93AEC1;"><span></span>Blue</button>
+        <button class="thread-swatch" data-color="#DCB0A6" style="--sw:#DCB0A6;"><span></span>Pink</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-primary btn-checkout" id="toCheckoutBtn">Continue to Checkout &rarr;</button>
+</section>
+
+<!-- =========================================================
+     COMPONENT: CheckoutStep (Step 3 — Your Selection + order total)
+========================================================= -->
+<section class="gift-checkout" id="checkoutStep" hidden>
+  <button class="step-back-link" data-back-to="2">&larr; Back to Gifting</button>
+  <h2>Checkout</h2>
+
+  <div class="checkout-summary standalone-panel">
+    <h3>Your Selection</h3>
+    <ul class="summary-list" id="summaryList">
+      <li class="empty-note">No styles selected yet.</li>
+    </ul>
+    <div class="summary-row"><span>Subtotal</span><span id="subtotalPrice">Rs. 0</span></div>
+    <div class="summary-row savings-row" id="savingsRow" style="display:none;"><span>Savings</span><span id="savingsAmount">Rs. 0</span></div>
+    <div class="summary-row" id="envelopeRow"><span>Gift packaging</span><span>Rs. 500</span></div>
+    <div class="summary-row" id="embroideryRow" style="display:none;"><span>Embroidery add-on</span><span>Free</span></div>
+    <div class="summary-row summary-total"><span>Bundle Total</span><span id="totalPrice">Rs. 0</span></div>
+  </div>
+
+  <button class="btn-primary btn-checkout" id="checkoutBtn">Proceed to Checkout</button>
+</section>
+
+<div class="gift-toast" id="giftToast">You can select up to 5 styles for your gift</div>
+<div class="bundle-ready-banner" id="bundleReadyBanner">&#10003; Bundle Ready! Continue &rarr;</div>
+
+<script>
+  var MAX_SELECT = 5;
+  var selected = []; // array of {name, price, compare, img}
+
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.gift-card'));
+  var bundleSummaryToggle = document.getElementById('bundleSummaryToggle');
+  var bundleSummaryText = document.getElementById('bundleSummaryText');
+  var bundleDrawer = document.getElementById('bundleDrawer');
+  var bundleDrawerList = document.getElementById('bundleDrawerList');
+  var continueBtn = document.getElementById('continueBtn');
+  var summaryList = document.getElementById('summaryList');
+  var subtotalPriceEl = document.getElementById('subtotalPrice');
+  var totalPriceEl = document.getElementById('totalPrice');
+  var savingsRow = document.getElementById('savingsRow');
+  var savingsAmountEl = document.getElementById('savingsAmount');
+  var embroideryRow = document.getElementById('embroideryRow');
+  var envelopeRow = document.getElementById('envelopeRow');
+  var giftToast = document.getElementById('giftToast');
+  var sbAmount = document.getElementById('sbAmount');
+  var sbSavings = document.getElementById('sbSavings');
+  var bundleReadyBanner = document.getElementById('bundleReadyBanner');
+  var ENVELOPE_FEE = 500;  // mandatory gift packaging
+  var EMBROIDERY_FEE = 0;  // free optional add-on
+  var bundleReadyShown = false;
+
+  function showToast(msg){
+    giftToast.textContent = msg;
+    giftToast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function(){ giftToast.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- Confetti ---------- */
+  function fireConfetti(){
+    var colors = ['#6F9C8D', '#DCB0A6', '#93AEC1', '#E6D9C4', '#4F7A6D'];
+    for(var i = 0; i < 22; i++){
+      (function(){
+        var piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = (45 + Math.random() * 10) + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = (Math.random() * 0.25) + 's';
+        piece.style.transform = 'translateX(' + ((Math.random() - 0.5) * 220) + 'px)';
+        document.body.appendChild(piece);
+        setTimeout(function(){ piece.remove(); }, 1900);
+      })();
+    }
+  }
+
+  function maybeCelebrateBundleReady(){
+    if(selected.length === MAX_SELECT && !bundleReadyShown){
+      bundleReadyShown = true;
+      fireConfetti();
+      bundleReadyBanner.classList.add('show');
+      setTimeout(function(){ bundleReadyBanner.classList.remove('show'); }, 2200);
+    }
+    if(selected.length < MAX_SELECT){ bundleReadyShown = false; }
+  }
+
+  function refreshMaxedState(){
+    var atMax = selected.length >= MAX_SELECT;
+    cards.forEach(function(card){
+      card.classList.toggle('maxed', atMax && !card.classList.contains('selected'));
+    });
+  }
+
+  function toggleCard(card){
+    var name = card.getAttribute('data-name');
+    var price = parseInt(card.getAttribute('data-price'), 10);
+    var compareEl = card.querySelector('.price-compare');
+    var compare = compareEl ? parseInt(compareEl.textContent.replace(/[^\d]/g, ''), 10) : 0;
+    var img = card.querySelector('img').getAttribute('src');
+    var isSelected = card.classList.contains('selected');
+
+    if(!isSelected && selected.length >= MAX_SELECT){
+      showToast('You can select up to 5 styles for your gift');
+      return;
+    }
+
+    if(isSelected){
+      card.classList.remove('selected');
+      card.querySelector('.gift-card-select').setAttribute('aria-pressed', 'false');
+      card.querySelector('.cta-text').textContent = 'Add';
+      selected = selected.filter(function(item){ return item.name !== name; });
+    } else {
+      card.classList.add('selected');
+      card.querySelector('.gift-card-select').setAttribute('aria-pressed', 'true');
+      card.querySelector('.cta-text').textContent = 'Added';
+      selected.push({ name: name, price: price, compare: compare, img: img });
+    }
+
+    renderSelection();
+  }
+
+  function renderSelection(){
+    var count = selected.length;
+
+    // Sticky bar summary row
+    bundleSummaryToggle.disabled = count === 0;
+    if(count === 0){
+      bundleSummaryText.innerHTML = 'Select items to get started';
+      bundleDrawer.classList.remove('open');
+      bundleSummaryToggle.classList.remove('open');
+    } else {
+      bundleSummaryText.innerHTML = '<span class="bundle-count-check">&#10003;</span>' + count + ' Item' + (count > 1 ? 's' : '') + ' Selected';
+    }
+    continueBtn.disabled = count === 0;
+
+    // Bundle drawer list
+    bundleDrawerList.innerHTML = '';
+    if(count === 0){
+      var emptyLi = document.createElement('li');
+      emptyLi.className = 'bundle-drawer-empty';
+      emptyLi.textContent = 'No styles selected yet.';
+      bundleDrawerList.appendChild(emptyLi);
+    } else {
+      selected.forEach(function(item){
+        var li = document.createElement('li');
+        li.innerHTML = '<span class="bd-check">&#10003;</span><span class="bd-name">' + item.name + '</span><span class="bd-price">Rs. ' + item.price.toLocaleString('en-IN') + '</span>';
+        bundleDrawerList.appendChild(li);
+      });
+    }
+
+    // Order summary list (checkout section)
+    summaryList.innerHTML = '';
+    if(count === 0){
+      var note = document.createElement('li');
+      note.className = 'empty-note';
+      note.textContent = 'No styles selected yet.';
+      summaryList.appendChild(note);
+    } else {
+      selected.forEach(function(item){
+        var li = document.createElement('li');
+        var img = document.createElement('img');
+        img.src = item.img; img.alt = item.name;
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 's-name'; nameSpan.textContent = item.name;
+        var priceSpan = document.createElement('span');
+        priceSpan.className = 's-price'; priceSpan.textContent = 'Rs. ' + item.price.toLocaleString('en-IN');
+        li.appendChild(img); li.appendChild(nameSpan); li.appendChild(priceSpan);
+        summaryList.appendChild(li);
+      });
+    }
+
+    updateTotals();
+    refreshMaxedState();
+    maybeCelebrateBundleReady();
+  }
+
+  function updateTotals(){
+    var subtotal = selected.reduce(function(sum, item){ return sum + item.price; }, 0);
+    var totalSavings = selected.reduce(function(sum, item){ return sum + (item.compare > item.price ? item.compare - item.price : 0); }, 0);
+    // Gift packaging is mandatory on every order; embroidery is a free optional add-on.
+    var embroiderApplies = document.getElementById('embroiderToggle').checked;
+    var envelopeFee = ENVELOPE_FEE;
+    var embroideryFee = embroiderApplies ? EMBROIDERY_FEE : 0;
+    var total = subtotal + envelopeFee + embroideryFee;
+
+    subtotalPriceEl.textContent = 'Rs. ' + subtotal.toLocaleString('en-IN');
+    totalPriceEl.textContent = 'Rs. ' + total.toLocaleString('en-IN');
+    envelopeRow.style.display = 'flex';
+    embroideryRow.style.display = embroiderApplies ? 'flex' : 'none';
+
+    savingsRow.style.display = totalSavings > 0 ? 'flex' : 'none';
+    savingsAmountEl.textContent = 'Rs. ' + totalSavings.toLocaleString('en-IN');
+
+    // Sticky bar
+    sbAmount.textContent = 'Rs. ' + total.toLocaleString('en-IN');
+    if(totalSavings > 0){
+      sbSavings.hidden = false;
+      sbSavings.textContent = "You're saving Rs. " + totalSavings.toLocaleString('en-IN');
+    } else {
+      sbSavings.hidden = true;
+    }
+  }
+
+  cards.forEach(function(card){
+    card.querySelector('.gift-card-select').addEventListener('click', function(e){
+      e.preventDefault();
+      toggleCard(card);
+    });
+    card.querySelector('.gift-card-cta').addEventListener('click', function(e){
+      e.preventDefault();
+      toggleCard(card);
+    });
+    card.querySelector('.gift-card-img img').addEventListener('click', function(){
+      toggleCard(card);
+    });
+  });
+
+  // ---------- Bundle drawer toggle ----------
+  bundleSummaryToggle.addEventListener('click', function(){
+    var isOpen = bundleDrawer.classList.toggle('open');
+    bundleSummaryToggle.classList.toggle('open', isOpen);
+  });
+
+  // ---------- Filter pills ----------
+  document.querySelectorAll('.filter-pill').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      document.querySelectorAll('.filter-pill').forEach(function(p){ p.classList.remove('active'); });
+      pill.classList.add('active');
+      var filter = pill.getAttribute('data-filter');
+      cards.forEach(function(card){
+        var gender = card.getAttribute('data-gender');
+        var show = filter === 'all' || gender === filter || gender === 'unisex';
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  // ---------- Paged flow: Step 1 Products / Step 2 Gifting / Step 3 Checkout ----------
+  var currentStep = 1;
+  var productsEls = [document.getElementById('filterBar'), document.getElementById('giftGrid')];
+  var giftingStep = document.getElementById('giftingStep');
+  var checkoutStep = document.getElementById('checkoutStep');
+
+  function setStep(n){
+    document.getElementById('stepNum').textContent = n;
+    var headings = { 1:'Choose Products', 2:'Gift Packaging & Embroidery', 3:'Review & Checkout' };
+    document.getElementById('stepHeading').textContent = headings[n];
+    document.querySelectorAll('.step-dot').forEach(function(dot){
+      var s = parseInt(dot.getAttribute('data-step'), 10);
+      dot.classList.toggle('active', s === n);
+      dot.classList.toggle('done', s < n);
+    });
+    document.getElementById('stepLine1').classList.toggle('done', n > 1);
+    document.getElementById('stepLine2').classList.toggle('done', n > 2);
+    document.querySelectorAll('.step-labels span').forEach(function(label){
+      label.classList.toggle('active', parseInt(label.getAttribute('data-step'), 10) === n);
+    });
+  }
+
+  function goToStep(n){
+    currentStep = n;
+    productsEls.forEach(function(el){ el.hidden = n !== 1; });
+    giftingStep.hidden = n !== 2;
+    checkoutStep.hidden = n !== 3;
+
+    // Sticky-bar CTA only makes sense on the products step — the gifting
+    // and checkout pages have their own primary button.
+    continueBtn.style.display = n === 1 ? '' : 'none';
+
+    setStep(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  continueBtn.addEventListener('click', function(){
+    goToStep(2);
+  });
+
+  document.getElementById('toCheckoutBtn').addEventListener('click', function(){
+    goToStep(3);
+  });
+
+  document.querySelectorAll('.step-back-link').forEach(function(link){
+    link.addEventListener('click', function(){
+      goToStep(parseInt(link.getAttribute('data-back-to'), 10));
+    });
+  });
+
+  // ---------- Embroidery toggle + live preview ----------
+  var embroiderToggle = document.getElementById('embroiderToggle');
+  var embroiderDetail = document.getElementById('embroiderDetail');
+  var embroiderInput = document.getElementById('embroiderInput');
+  var charCount = document.getElementById('charCount');
+  var embroiderLiveText = document.getElementById('embroiderLiveText');
+
+  embroiderToggle.addEventListener('change', function(){
+    embroiderDetail.hidden = !embroiderToggle.checked;
+    updateTotals();
+  });
+
+  embroiderInput.addEventListener('input', function(){
+    var val = embroiderInput.value.trim();
+    charCount.textContent = embroiderInput.value.length;
+    embroiderLiveText.textContent = val || 'Krish';
+    embroiderLiveText.classList.toggle('placeholder', val === '');
+  });
+
+  // ---------- Thread colour swatches ----------
+  document.querySelectorAll('.thread-swatch').forEach(function(sw){
+    sw.addEventListener('click', function(){
+      document.querySelectorAll('.thread-swatch').forEach(function(s){ s.classList.remove('active'); });
+      sw.classList.add('active');
+      embroiderLiveText.style.color = sw.getAttribute('data-color');
+    });
+  });
+
+  // ---------- Checkout button (prototype only) ----------
+  document.getElementById('checkoutBtn').addEventListener('click', function(){
+    if(selected.length === 0){
+      showToast('Select at least one style before checking out');
+      return;
+    }
+    showToast('Prototype only — this would continue to payment');
+  });
+
+  renderSelection();
+  goToStep(1);
+</script>
+
+</body>
+</html>
