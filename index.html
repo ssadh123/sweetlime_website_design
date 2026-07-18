@@ -68,6 +68,25 @@
   }
 
   /* ============================================================
+     COMPONENT: InfluencerTeaser (first thing visitors see)
+     ============================================================ */
+  .influencer-teaser{
+    max-width:300px; margin:0 auto; padding:32px 24px 0; text-align:center;
+  }
+  .influencer-teaser-video{
+    border-radius:16px; overflow:hidden; background:#000;
+    box-shadow:0 16px 32px rgba(44,36,32,0.14); border:1px solid var(--clr-border);
+  }
+  .influencer-teaser-video video{
+    width:100%; aspect-ratio:9/16; object-fit:cover; display:block;
+  }
+  .influencer-teaser-caption{
+    font-family:var(--font-menu); font-size:11px; font-weight:600;
+    letter-spacing:1.5px; text-transform:uppercase; color:var(--clr-teal-deep);
+    margin:14px 0 0;
+  }
+
+  /* ============================================================
      COMPONENT: GiftHero
      ============================================================ */
   .gift-hero{
@@ -577,6 +596,7 @@
     .envelope-card-img{ aspect-ratio:4/3; }
     .envelope-video-row{ grid-template-columns:1fr; }
     .envelope-video{ max-width:280px; margin:0 auto; }
+    .influencer-teaser{ max-width:240px; padding:24px 20px 0; }
   }
 </style>
 </head>
@@ -589,6 +609,18 @@
   <span class="logo-placeholder">sweetlime</span>
   <a href="#" class="back-link">&larr; Back</a>
 </header>
+
+<!-- =========================================================
+     COMPONENT: InfluencerTeaser (first thing visitors see)
+========================================================= -->
+<section class="influencer-teaser">
+  <div class="influencer-teaser-video">
+    <video controls playsinline preload="metadata" poster="assets/envelope_video_poster.jpg">
+      <source src="assets/envelope_influencer.mp4" type="video/mp4">
+    </video>
+  </div>
+  <p class="influencer-teaser-caption">&#10003; As seen on Instagram &mdash; @sweetlimebyas</p>
+</section>
 
 <!-- =========================================================
      COMPONENT: GiftHero
