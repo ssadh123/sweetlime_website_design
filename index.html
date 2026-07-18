@@ -68,10 +68,10 @@
   }
 
   /* ============================================================
-     COMPONENT: InfluencerTeaser (first thing visitors see)
+     COMPONENT: InfluencerTeaser (first thing seen on the Gifting step)
      ============================================================ */
   .influencer-teaser{
-    max-width:300px; margin:0 auto; padding:32px 24px 0; text-align:center;
+    max-width:300px; margin:0 auto; padding:0 0 36px; text-align:center;
   }
   .influencer-teaser-video{
     border-radius:16px; overflow:hidden; background:#000;
@@ -447,24 +447,6 @@
     font-family:var(--font-body); font-size:13px; color:var(--clr-text-soft); margin:0 0 20px;
   }
 
-  /* Envelope card + influencer video, side by side */
-  .envelope-video-row{
-    display:grid; grid-template-columns:1fr 1fr; gap:20px;
-    margin-bottom:22px;
-  }
-  .envelope-video{
-    background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:14px;
-    overflow:hidden; box-shadow:0 10px 24px rgba(44,36,32,0.06);
-    display:flex; flex-direction:column;
-  }
-  .envelope-video-el{
-    width:100%; aspect-ratio:9/16; object-fit:cover; background:#000; display:block;
-  }
-  .envelope-video-caption{
-    font-family:var(--font-body); font-size:12px; color:var(--clr-text-soft);
-    text-align:center; padding:12px 10px; margin:0;
-  }
-
   /* Envelope card */
   .envelope-card{
     background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:14px;
@@ -594,9 +576,7 @@
     .sb-amount{ font-size:24px; }
     .btn-primary{ padding:17px 22px; font-size:13.5px; }
     .envelope-card-img{ aspect-ratio:4/3; }
-    .envelope-video-row{ grid-template-columns:1fr; }
-    .envelope-video{ max-width:280px; margin:0 auto; }
-    .influencer-teaser{ max-width:240px; padding:24px 20px 0; }
+    .influencer-teaser{ max-width:240px; padding:0 0 28px; }
   }
 </style>
 </head>
@@ -609,18 +589,6 @@
   <span class="logo-placeholder">sweetlime</span>
   <a href="#" class="back-link">&larr; Back</a>
 </header>
-
-<!-- =========================================================
-     COMPONENT: InfluencerTeaser (first thing visitors see)
-========================================================= -->
-<section class="influencer-teaser">
-  <div class="influencer-teaser-video">
-    <video controls playsinline preload="metadata" poster="assets/envelope_video_poster.jpg">
-      <source src="assets/envelope_influencer.mp4" type="video/mp4">
-    </video>
-  </div>
-  <p class="influencer-teaser-caption">&#10003; As seen on Instagram &mdash; @sweetlimebyas</p>
-</section>
 
 <!-- =========================================================
      COMPONENT: GiftHero
@@ -922,35 +890,35 @@
   <button class="step-back-link" data-back-to="1">&larr; Back to Products</button>
   <h2>Gifting</h2>
 
+  <!-- Influencer video — first thing seen on this step -->
+  <section class="influencer-teaser">
+    <div class="influencer-teaser-video">
+      <video controls playsinline preload="metadata" poster="assets/envelope_video_poster.jpg">
+        <source src="assets/envelope_influencer.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="influencer-teaser-caption">&#10003; As seen on Instagram &mdash; @sweetlimebyas</p>
+  </section>
+
   <!-- Envelope + embroidery -->
   <div class="checkout-gift-panel standalone-panel">
     <p class="gift-panel-heading">Gift Packaging</p>
     <p class="gift-panel-sub">Every order is beautifully wrapped in our signature envelope. Personalise it with a free embroidered name if you'd like.</p>
 
-    <!-- Envelope card + influencer video, side by side -->
-    <div class="envelope-video-row">
-      <div class="envelope-card">
-        <div class="envelope-card-img"><img src="assets/envelope_clean.jpg" alt="Premium Linen Gift Envelope"></div>
-        <div class="envelope-card-info">
-          <h3>Premium Linen Gift Envelope</h3>
-          <p class="envelope-card-sub">A reusable keepsake envelope, tied with cotton ribbon.</p>
-          <ul class="envelope-badges">
-            <li>Reusable</li>
-            <li>Personalised</li>
-            <li>Hand-embroidered</li>
-          </ul>
-          <div class="envelope-card-footer">
-            <span class="envelope-card-price">Rs. 500</span>
-            <span class="envelope-included"><span>&#10003;</span> Included with every order</span>
-          </div>
+    <div class="envelope-card">
+      <div class="envelope-card-img"><img src="assets/envelope_clean.jpg" alt="Premium Linen Gift Envelope"></div>
+      <div class="envelope-card-info">
+        <h3>Premium Linen Gift Envelope</h3>
+        <p class="envelope-card-sub">A reusable keepsake envelope, tied with cotton ribbon.</p>
+        <ul class="envelope-badges">
+          <li>Reusable</li>
+          <li>Personalised</li>
+          <li>Hand-embroidered</li>
+        </ul>
+        <div class="envelope-card-footer">
+          <span class="envelope-card-price">Rs. 500</span>
+          <span class="envelope-included"><span>&#10003;</span> Included with every order</span>
         </div>
-      </div>
-
-      <div class="envelope-video">
-        <video class="envelope-video-el" controls playsinline preload="metadata" poster="assets/envelope_video_poster.jpg">
-          <source src="assets/envelope_influencer.mp4" type="video/mp4">
-        </video>
-        <p class="envelope-video-caption">See the packaging in action</p>
       </div>
     </div>
 
